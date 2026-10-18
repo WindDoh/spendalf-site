@@ -22,3 +22,14 @@ Routing source is active on a branch only after its migration commit is pushed;
 default-branch activation and a completed self-hosted job are separate evidence.
 
 The static security workflow has no package installation or compiler workload, so no dependency/build cache is useful. Pages uses its own self-hosted custom workflow and retains its separate deployment queue and protected github-pages environment.
+
+## Public fork validation boundary
+
+Unreviewed fork pull requests cannot run code on the personal PC. Their normal
+security job skips, while `Fork review required` remains pending on the deliberately
+unprovisioned `[self-hosted, pc-ci-untrusted-fork]` label. This prevents an all-skipped
+workflow from appearing green. Never register a runner with that label.
+
+Review the contribution and run the complete security validation from an owned
+branch before merging a fork contribution. A pending fork check is not validation
+evidence. There is no hosted fallback, and the gate contains no checkout action.
