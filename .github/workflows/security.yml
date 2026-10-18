@@ -21,3 +21,12 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - run: node --test tests/security.test.mjs
+
+  fork-review-required:
+    name: Fork review required
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
+    # This label is deliberately never provisioned by the PC scheduler.
+    runs-on: [self-hosted, pc-ci-untrusted-fork]
+    steps:
+      - name: Require full validation from a reviewed first-party branch
+        run: exit 1
