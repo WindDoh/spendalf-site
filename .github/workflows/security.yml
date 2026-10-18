@@ -15,7 +15,9 @@ concurrency:
 
 jobs:
   presentation-boundary:
-    runs-on: ubuntu-latest
+    # Fork code is never assigned to the personal PC.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, x64, pc-ci]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - run: node --test tests/security.test.mjs
